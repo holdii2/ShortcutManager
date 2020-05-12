@@ -1,0 +1,105 @@
+﻿<mah:MetroWindow x:Class="ShortcutManager.View.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:local="clr-namespace:ShortcutManager"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:viewModel="clr-namespace:ShortcutManager.ViewModel"
+                 xmlns:fluent="urn:fluent-ribbon"
+                 xmlns:converter="clr-namespace:ShortcutManager.Converter"
+                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                 xmlns:control="clr-namespace:ShortcutManager.Control"
+                 TitlebarHeight="60"
+                 mc:Ignorable="d"
+                 Title="MainWindow" Height="450" Width="800">
+
+    <mah:MetroWindow.DataContext>
+        <viewModel:MainViewModel />
+    </mah:MetroWindow.DataContext>
+
+    <mah:MetroWindow.Resources>
+        <ResourceDictionary>
+            <Style x:Key="{x:Type fluent:BackstageTabControl}"
+                   TargetType="{x:Type fluent:BackstageTabControl}"
+                   BasedOn="{StaticResource {x:Type fluent:BackstageTabControl}}">
+                <Setter Property="SelectedContentMargin"
+                        Value="0" />
+            </Style>
+            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Background" Value="Transparent" />
+            </Style>
+        </ResourceDictionary>
+    </mah:MetroWindow.Resources>
+
+    <mah:MetroWindow.TitleTemplate>
+        <DataTemplate>
+            <fluent:RibbonTitleBar x:Name="RibbonTitleBar"
+                                   Header="{Binding Path=Title, RelativeSource={RelativeSource AncestorType=mah:MetroWindow}}"
+                                   Height="60" />
+        </DataTemplate>
+    </mah:MetroWindow.TitleTemplate>
+
+    <mah:MetroWindow.LeftWindowCommands>
+        <mah:WindowCommands Height="60">
+            <control:ImageButton Content="Hinzufügen" Height="60" Width="80" Command="{Binding AddShortcutCommand}">
+                <control:ImageButton.Icon>
+                    <iconPacks:PackIconMaterial Kind="Plus" />
+                </control:ImageButton.Icon>
+            </control:ImageButton>
+            <control:ImageButton Content="Ausführen" Command="{Binding ExecuteShortcutCommand}" Height="60" Width="80">
+                <control:ImageButton.Icon>
+                    <iconPacks:PackIconMaterial Kind="HandOkay" />
+                </control:ImageButton.Icon>
+            </control:ImageButton>
+            <control:ImageButton Content="Entfernen" Command="{Binding DeleteShortcutCommand}" Height="60" Width="80">
+                <control:ImageButton.Icon>
+                    <iconPacks:PackIconMaterial Kind="Delete" />
+                </control:ImageButton.Icon>
+            </control:ImageButton>
+            <control:ImageButton Content="Bearbeiten" Command="{Binding EditShortcutCommand}" Height="60" Width="80">
+                <control:ImageButton.Icon>
+                    <iconPacks:PackIconMaterial Kind="Wrench" />
+                </control:ImageButton.Icon>
+            </control:ImageButton>
+        </mah:WindowCommands>
+    </mah:MetroWindow.LeftWindowCommands>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <ListView Grid.Row="2"
+                  SelectedItem="{Binding SelectedShortcut, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ItemsSource="{Binding Shortcuts}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel ScrollViewer.HorizontalScrollBarVisibility="Disabled" Orientation="Horizontal"
+                               IsItemsHost="True" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Border BorderBrush="Black" BorderThickness="1" Margin="10" Height="160" Width="120">
+                            <StackPanel>
+                                <TextBlock Text="{Binding ShortcutItemEntity.Title}" HorizontalAlignment="Center"
+                                           TextWrapping="Wrap" />
+                                <TextBlock
+                                    Text="{Binding ShortcutItemEntity, Converter={converter:EntityToShortcutStringConverter}}"
+                                    HorizontalAlignment="Center"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</mah:MetroWindow>

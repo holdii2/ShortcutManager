@@ -1,0 +1,48 @@
+﻿<mah:MetroWindow x:Class="ShortcutManager.View.AddShortcutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ShortcutManager.View"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:viewModel="clr-namespace:ShortcutManager.ViewModel"
+        xmlns:markupExtensions="clr-namespace:ShortcutManager.MarkupExtensions"
+        xmlns:shortcutManager="clr-namespace:ShortcutManager"
+        xmlns:enum="clr-namespace:ShortcutManager.Enum"
+        mc:Ignorable="d"
+        Title="Shortcut Hinzufügen" Height="450" Width="800">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Titel" Grid.Row="0" Grid.Column="0" Margin="0,10,0,0"/>
+            <TextBox Text="{Binding Entity.Title}" Grid.Row="0" Grid.Column="1" Margin="0,10,0,0"/>
+            <Label Content="ExecuteString" Grid.Row="1" Grid.Column="0" Margin="0,10,0,0"/>
+            <TextBox Text="{Binding Entity.ExecuteString}" Grid.Row="1" Grid.Column="1" Margin="0,10,0,0"/>
+            <Label Content="Typ" Grid.Row="2" Grid.Column="0" Margin="0,10,0,0"/>
+            <ComboBox Text="{Binding Entity.Type}" ItemsSource="{markupExtensions:EnumToItemsSource {x:Type enum:ShortcutItemType}}"  Grid.Row="2" Grid.Column="1" Margin="0,10,0,0"/>
+            <Label Content="Shortcut" Grid.Row="3" Grid.Column="0" Margin="0,10,0,0"/>
+            <TextBox Text="{Binding ShortcutString, Mode=OneWay}" PreviewMouseUp="UIElement_OnMouseDown"  Grid.Row="3" Grid.Column="1" x:Name="ShortcutTextBox" IsReadOnly="True" Margin="0,10,0,0"/>
+        </Grid>
+        <Button Content="Ok" Command="{Binding SaveEntityCommand}" Grid.Row="1"/>
+        <Button Content="Abbrechen" Grid.Column="1" Command="{Binding CancelCommand}" Grid.Row="1"/>
+    </Grid>
+</mah:MetroWindow>
